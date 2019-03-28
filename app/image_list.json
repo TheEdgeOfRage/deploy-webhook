@@ -1,0 +1,11 @@
+{
+	"test_s1": {
+		"repository": "theedgeofrage/test",
+		"tag": "latest"
+	},
+	"test_s2": {
+		"repository": "theedgeofrage/test2",
+		"tag": "latest"
+	}
+}
+
