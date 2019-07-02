@@ -7,6 +7,14 @@
 # Distributed under terms of the BSD-3-Clause license.
 
 import docker
+import json
+import time
+
+from datetime import datetime
+
+
+class ServiceUpdateError(Exception):
+	pass
 
 
 class DockerClient:
@@ -16,59 +24,81 @@ class DockerClient:
 		self.get_images()
 
 	def get_images(self):
-		self.services = self.client.services.list()
-		self.images = {}
-		for service in self.services:
-			if service.name.startswith(self.stack):
-				image = service.attrs['Spec']['TaskTemplate']['ContainerSpec']['Image']
-				image = image.split('@')[0]
-				repository, tag = image.split(':')
-				self.images[service.name] = {
-					'repository': repository,
-					'tag': tag,
-				}
+		with open('images.json', 'r') as f:
+			self.images = json.load(f)
 
 	def backup_images(self):
-		for service in self.images:
-			new_image = self.images[service]
-			old_image = self.client.images.get(f'{new_image["repository"]}:{new_image["tag"]}')
-			old_image.tag(new_image['repository'], tag='previous')
+		try:
+			for service in self.images:
+				image_name = self.images[service]
+				image = self.client.images.get(f'{image_name["repository"]}:{image_name["tag"]}')
+				image.tag(image_name['repository'], tag='previous')
+		except docker.errors.ImageNotFound as e:
+			print(e)
+			return False
+
+		return True
 
 	def pull_images(self):
 		for service in self.images:
 			image = self.images[service]
 			self.client.images.pull(repository=image['repository'], tag=image['tag'])
 
-	def update_stack(self):
-		self.backup_images()
-		self.pull_images()
-		updated_services = {}
+	def wait_for_service_update(self, service, now):
+		while True:
+			time.sleep(1)
+			service.reload()
+			updated_at = service.attrs['UpdatedAt'].split('.')[0]
+			updated_at = datetime.strptime(updated_at, '%Y-%m-%dT%H:%M:%S')
+			state = service.attrs['UpdateStatus']['State']
+			if updated_at > now and state != 'updating':
+				return
 
-		for service in self.services:
+	def update_service(self, service, image):
+		now = datetime.utcnow()
+		service.update(image=image, force_update=True)
+		self.wait_for_service_update(service, now)
+		update_state = service.attrs['UpdateStatus']['State']
+		if update_state != 'completed':
+			raise ServiceUpdateError(f'Failed to update service {service.name}')
+
+		print('Updated service', service.name)
+
+	def update_stack(self):
+		revert = self.backup_images()
+		self.pull_images()
+		services = self.client.services.list()
+		services.sort(key=lambda service: service.name)
+		updated_services = []
+
+		for service in services:
 			if service.name not in self.images:
 				continue
 
 			image = self.images[service.name]
-			repository = image['repository']
-			tag = image['tag']
-			image = f'{repository}:{tag}'
-			updated_services.append(service)
+			image = f'{image["repository"]}:{image["tag"]}'
+			print('Updating service', service.name, 'with image', image)
 			try:
-				service.update(force_update=True)
-				print(f'Updated service {service.name}')
-			except docker.errors.APIError:
-				return self.revert_services(updated_services, service.name)
+				self.update_service(service, image)
+				updated_services.append(service)
+			except (docker.errors.APIError, ServiceUpdateError) as e:
+				print(e)
+				if revert:
+					return self.revert_services(updated_services, service.name)
+				else:
+					return {'err': 'Stack revert failed', 'msg': 'No backup images were created'}, 500
 
 		return {'msg': 'Successfully updated all services'}, 200
 
 	def revert_services(self, updated_services, failed_service):
 		for service in updated_services:
 			image = f'{self.images[service.name]["repository"]}:previous'
-			print(service, image)
+			print('Reverting service', service.name)
 			try:
-				service.update(image, force_update=True)
-			except docker.errors.APIError as e:
-				return {'err': 'Revert failed', 'msg': str(e)}, 500
+				self.update_service(service, image)
+			except (docker.errors.APIError, ServiceUpdateError) as e:
+				print(e)
+				return {'err': 'Stack revert failed', 'msg': str(e)}, 500
 
-		return {'err': f'Update failed', 'msg': 'Service {failed_service} failed to update. Stack reverted'}, 500
+		return {'err': 'Stack update failed', 'msg': f'Service {failed_service} failed to update. Stack reverted'}, 500
 
