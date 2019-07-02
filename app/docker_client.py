@@ -18,9 +18,8 @@ class ServiceUpdateError(Exception):
 
 
 class DockerClient:
-	def __init__(self, stack):
+	def __init__(self):
 		self.client = docker.from_env()
-		self.stack = stack
 		self.get_images()
 
 	def get_images(self):
