@@ -2,34 +2,47 @@
 # -*- coding: utf-8 -*-
 # vim:fenc=utf-8
 #
-# Copyright © 2019 Vivify Ideas
+# Copyright © 2019 pavle <pavle.portic@tilda.center>
 #
 # Distributed under terms of the BSD-3-Clause license.
 
 import docker
-import json
 import time
-
 from datetime import datetime
 
+from app.models.service import Service
+from .docker_controller import DockerController
+from .exceptions import ServiceUpdateError
 
-class ServiceUpdateError(Exception):
-	pass
 
+class ServiceController(DockerController):
+	def __init__(self, controller=None):
+		if controller is None:
+			super(ServiceController, self).__init__()
+		else:
+			self.client = controller.client
 
-class DockerClient:
-	def __init__(self):
-		self.client = docker.from_env()
-		self.get_images()
+	def get_image_mappings(self):
+		services = Service.query.all()
+		self.image_mappings = {service.name: {
+			'repository': service.repository,
+			'tag': service.tag,
+		} for service in services}
 
-	def get_images(self):
-		with open('images.json', 'r') as f:
-			self.images = json.load(f)
+		return services
+
+	def get_services_status(self, services):
+		active_services = self.client.services.list()
+		for service in services:
+			if [active_services for active_service in active_services if active_service.name == service['name']]:
+				service['active'] = True
+			else:
+				service['active'] = False
 
 	def backup_images(self):
 		try:
-			for service in self.images:
-				image_name = self.images[service]
+			for service in self.image_mappings:
+				image_name = self.image_mappings[service]
 				image = self.client.images.get(f'{image_name["repository"]}:{image_name["tag"]}')
 				image.tag(image_name['repository'], tag='previous')
 		except docker.errors.ImageNotFound as e:
@@ -39,8 +52,8 @@ class DockerClient:
 		return True
 
 	def pull_images(self):
-		for service in self.images:
-			image = self.images[service]
+		for service in self.image_mappings:
+			image = self.image_mappings[service]
 			self.client.images.pull(repository=image['repository'], tag=image['tag'])
 
 	def wait_for_service_update(self, service, now):
@@ -61,9 +74,8 @@ class DockerClient:
 		if update_state != 'completed':
 			raise ServiceUpdateError(f'Failed to update service {service.name}')
 
-		print('Updated service', service.name)
-
 	def update_stack(self):
+		self.get_image_mappings()
 		revert = self.backup_images()
 		self.pull_images()
 		services = self.client.services.list()
@@ -71,12 +83,11 @@ class DockerClient:
 		updated_services = []
 
 		for service in services:
-			if service.name not in self.images:
+			if service.name not in self.image_mappings:
 				continue
 
-			image = self.images[service.name]
+			image = self.image_mappings[service.name]
 			image = f'{image["repository"]}:{image["tag"]}'
-			print('Updating service', service.name, 'with image', image)
 			try:
 				self.update_service(service, image)
 				updated_services.append(service)
@@ -91,8 +102,7 @@ class DockerClient:
 
 	def revert_services(self, updated_services, failed_service):
 		for service in updated_services:
-			image = f'{self.images[service.name]["repository"]}:previous'
-			print('Reverting service', service.name)
+			image = f'{self.image_mappings[service.name]["repository"]}:previous'
 			try:
 				self.update_service(service, image)
 			except (docker.errors.APIError, ServiceUpdateError) as e:
@@ -100,4 +110,5 @@ class DockerClient:
 				return {'err': 'Stack revert failed', 'msg': str(e)}, 500
 
 		return {'err': 'Stack update failed', 'msg': f'Service {failed_service} failed to update. Stack reverted'}, 500
+
 

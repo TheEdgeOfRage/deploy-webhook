@@ -6,7 +6,10 @@
 #
 # Distributed under terms of the BSD-3-Clause license.
 
-from app import create_app
+from marshmallow import Schema, fields
 
-app = create_app()
+
+class UserSchema(Schema):
+    id = fields.Int()
+    username = fields.Str()
 

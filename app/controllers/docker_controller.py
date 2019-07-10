@@ -6,7 +6,10 @@
 #
 # Distributed under terms of the BSD-3-Clause license.
 
-from app import create_app
+import docker
 
-app = create_app()
+
+class DockerController():
+	def __init__(self):
+		self.client = docker.from_env()
 

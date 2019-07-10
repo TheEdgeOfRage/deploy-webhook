@@ -7,13 +7,31 @@
 # Distributed under terms of the BSD-3-Clause license.
 
 from flask import Blueprint
+from flask import Flask
+from flask_jwt_extended import JWTManager
+from os import environ
 
 from .api import api
+from .commands import register_commands
+from .config import configs
+from .db import init_db
 
 
-def create_blueprint():
-	api_blueprint = Blueprint('api', __name__)
+def register_blueprint(app, package_name):
+	api_blueprint = Blueprint('api', package_name)
 	api.init_app(api_blueprint)
+	app.register_blueprint(api_blueprint, url_prefix='/api')
 
-	return api_blueprint
+
+def create_app(package_name=__name__):
+	app = Flask(package_name)
+	config = configs.get(environ.get('FLASK_ENV', 'production'))
+	app.config.from_object(config)
+
+	JWTManager(app)
+	init_db(app)
+	register_blueprint(app, package_name)
+	register_commands(app)
+
+	return app
 

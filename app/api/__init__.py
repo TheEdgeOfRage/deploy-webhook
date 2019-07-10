@@ -7,8 +7,17 @@
 # Distributed under terms of the BSD-3-Clause license.
 
 from flask_restful import Api
-from .webhook import WebhookResource
+from .containers import ContainerExecResource
+from .deploy import DeployResource
+from .services import ServicesResource
+from .user import SignupResource, LoginResource, RefreshResource
 
 api = Api()
-api.add_resource(WebhookResource, '/')
+
+api.add_resource(LoginResource, '/login')
+api.add_resource(RefreshResource, '/refresh')
+api.add_resource(SignupResource, '/signup')
+api.add_resource(DeployResource, '/deploy')
+api.add_resource(ServicesResource, '/services')
+api.add_resource(ContainerExecResource, '/containers/<container_id>/exec')
 

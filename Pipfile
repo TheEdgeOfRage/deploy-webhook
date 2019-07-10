@@ -9,7 +9,14 @@ python-dotenv = "*"
 [packages]
 flask = "*"
 flask-restful = "*"
+flask-migrate = "*"
+marshmallow = "*"
+flask-marshmallow = "*"
+argon2-cffi = "*"
+passlib = "*"
+flask-jwt-extended = "*"
 gunicorn = "*"
+docker = "*"
 
 [requires]
 python_version = "3.7"
