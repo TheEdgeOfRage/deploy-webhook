@@ -17,6 +17,7 @@ class BaseConfig:
 	SQLALCHEMY_TRACK_MODIFICATIONS = False
 	SIGNATURE_SECRET = None
 	SECRET_KEY = None
+	JWT_DECODE_LEEWAY = 10
 
 
 class DevConfig(BaseConfig):

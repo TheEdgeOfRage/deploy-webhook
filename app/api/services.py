@@ -8,6 +8,7 @@
 
 from flask import request
 from flask_restful import Resource
+from flask_jwt_extended import jwt_required
 
 from app.db import db
 from app.controllers.service_controller import ServiceController
@@ -19,6 +20,7 @@ from app.schemas.service import ServiceSchema
 class ServicesResource(Resource):
 	service_schema = ServiceSchema()
 
+	@jwt_required
 	def post(self):
 		name = request.json.get('name', None)
 		repository = request.json.get('repository', None)
@@ -32,6 +34,7 @@ class ServicesResource(Resource):
 
 		return {'msg': 'Successfully added service'}, 200
 
+	@jwt_required
 	def get(self):
 		service_controller = ServiceController()
 		services = service_controller.get_image_mappings()
