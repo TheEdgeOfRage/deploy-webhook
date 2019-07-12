@@ -22,16 +22,18 @@ class ServiceController(DockerController):
 		else:
 			self.client = controller.client
 
-	def get_image_mappings(self):
-		services = Service.query.all()
+	def get_services(self):
+		return Service.query.all()
+
+	def get_image_mappings(self, active_services):
+		services = self.get_services()
+		service_names = [service.name for service in active_services]
 		self.image_mappings = {service.name: {
 			'repository': service.repository,
 			'tag': service.tag,
-		} for service in services}
+		} for service in services if service.name in service_names}
 
-		return services
-
-	def get_services_status(self, services):
+	def set_services_status(self, services):
 		active_services = self.client.services.list()
 		for service in services:
 			if [active_services for active_service in active_services if active_service.name == service['name']]:
@@ -52,9 +54,14 @@ class ServiceController(DockerController):
 		return True
 
 	def pull_images(self):
-		for service in self.image_mappings:
-			image = self.image_mappings[service]
-			self.client.images.pull(repository=image['repository'], tag=image['tag'])
+		try:
+			for service in self.image_mappings:
+				image = self.image_mappings[service]
+				self.client.images.pull(repository=image['repository'], tag=image['tag'])
+		except docker.errors.NotFound:
+			return False
+
+		return True
 
 	def wait_for_service_update(self, service, now):
 		while True:
@@ -75,11 +82,10 @@ class ServiceController(DockerController):
 			raise ServiceUpdateError(f'Failed to update service {service.name}')
 
 	def update_stack(self):
-		self.get_image_mappings()
+		services = self.client.services.list()
+		self.get_image_mappings(services)
 		revert = self.backup_images()
 		self.pull_images()
-		services = self.client.services.list()
-		services.sort(key=lambda service: service.name)
 		updated_services = []
 
 		for service in services:

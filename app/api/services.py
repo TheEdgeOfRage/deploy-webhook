@@ -37,9 +37,9 @@ class ServicesResource(Resource):
 	@jwt_required
 	def get(self):
 		service_controller = ServiceController()
-		services = service_controller.get_image_mappings()
+		services = service_controller.get_services()
 		services = [self.service_schema.dump(service) for service in services]
-		service_controller.get_services_status(services)
+		service_controller.set_services_status(services)
 		container_controller = ContainerController(service_controller)
 		container_controller.get_active_containers(services)
 

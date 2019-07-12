@@ -13,9 +13,9 @@ from app.db import db
 
 
 def create_services():
-	service1 = Service(name='test_s1', repository='theedgeofrage/im1', tag='latest')
-	service2 = Service(name='test_s2', repository='theedgeofrage/im2', tag='latest')
-	service3 = Service(name='test_s3', repository='theedgeofrage/im3', tag='latest')
+	service1 = Service(name='test_s1', repository='theedgeofrage/test', tag='latest')
+	service2 = Service(name='test_s2', repository='theedgeofrage/test2', tag='latest')
+	service3 = Service(name='test_s3', repository='theedgeofrage/test3', tag='latest')
 	db.session.add(service1)
 	db.session.add(service2)
 	db.session.add(service3)

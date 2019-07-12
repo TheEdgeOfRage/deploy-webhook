@@ -29,3 +29,12 @@ class ContainerExecResource(Resource):
 
 		return {'msg': 'Successfully ran commands', 'result': response}, 200
 
+
+class ContainerLogsResource(Resource):
+	def get(self, container_id):
+		container_controller = ContainerController()
+		container = container_controller.get_container(container_id)
+		output = container_controller.get_logs(container)
+
+		return {'msg': 'Successfully grabbed logs', 'container_name': container.name, 'output': output}, 200
+

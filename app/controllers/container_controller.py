@@ -33,3 +33,7 @@ class ContainerController(DockerController):
 		output = output.decode('UTF-8')
 
 		return code, output
+
+	def get_logs(self, container):
+		return container.logs(tail=1000).decode('UTF-8')
+

@@ -7,7 +7,7 @@
 # Distributed under terms of the BSD-3-Clause license.
 
 from flask_restful import Api
-from .containers import ContainerExecResource
+from .containers import ContainerExecResource, ContainerLogsResource
 from .deploy import DeployResource
 from .services import ServicesResource
 from .user import SignupResource, LoginResource, RefreshResource
@@ -20,4 +20,5 @@ api.add_resource(SignupResource, '/signup')
 api.add_resource(DeployResource, '/deploy')
 api.add_resource(ServicesResource, '/services')
 api.add_resource(ContainerExecResource, '/containers/<container_id>/exec')
+api.add_resource(ContainerLogsResource, '/containers/<container_id>/logs')
 
