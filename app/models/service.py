@@ -12,8 +12,7 @@ from app.db import db
 class Service(db.Model):
 	__tablename__ = 'services'
 
-	id = db.Column(db.Integer, primary_key=True)
-	name = db.Column(db.String(256), unique=True, nullable=False)
+	name = db.Column(db.String(256), unique=True, primary_key=True)
 	repository = db.Column(db.String(256), nullable=False)
 	tag = db.Column(db.String(256), nullable=False)
 

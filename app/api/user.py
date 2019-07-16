@@ -12,6 +12,7 @@ from flask_jwt_extended import (
 	create_access_token,
 	create_refresh_token,
 	jwt_refresh_token_required,
+	jwt_required,
 	get_jwt_identity,
 )
 
@@ -23,6 +24,7 @@ from app.schemas.user import UserSchema
 class SignupResource(Resource):
 	schema = UserSchema()
 
+	@jwt_required
 	def post(self):
 		username = request.json['username']
 		password = request.json['password']

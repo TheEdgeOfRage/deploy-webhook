@@ -10,7 +10,6 @@ from marshmallow import Schema, fields
 
 
 class ServiceSchema(Schema):
-    id = fields.Int()
     name = fields.Str()
     repository = fields.Str()
     tag = fields.Str()

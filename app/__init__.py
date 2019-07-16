@@ -11,6 +11,7 @@ from flask import Flask
 from flask_jwt_extended import JWTManager
 from os import environ
 
+from .api import tasks
 from .api import api
 from .commands import register_commands
 from .config import configs
@@ -32,6 +33,7 @@ def create_app(package_name=__name__):
 	init_db(app)
 	register_blueprint(app, package_name)
 	register_commands(app)
+	app.before_first_request(tasks.before_first_request)
 
 	return app
 

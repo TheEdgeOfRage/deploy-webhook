@@ -9,7 +9,9 @@
 import docker
 import time
 from datetime import datetime
+from sqlalchemy.exc import IntegrityError
 
+from app.db import db
 from app.models.service import Service
 from .docker_controller import DockerController
 from .exceptions import ServiceUpdateError
@@ -24,6 +26,25 @@ class ServiceController(DockerController):
 
 	def get_services(self):
 		return Service.query.all()
+
+	def add_service(self, name, repository, tag):
+		try:
+			service = Service(name=name, repository=repository, tag=tag)
+			db.session.add(service)
+			db.session.commit()
+			return service
+		except IntegrityError:
+			db.session.rollback()
+			return None
+
+	def delete_service(self, name):
+		service = Service.query.filter_by(name=name).first()
+		if service is None:
+			return False
+
+		db.session.delete(service)
+		db.session.commit()
+		return True
 
 	def get_image_mappings(self, active_services):
 		services = self.get_services()

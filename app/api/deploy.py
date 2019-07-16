@@ -7,11 +7,11 @@
 # Distributed under terms of the BSD-3-Clause license.
 
 import hmac
-
 from flask import current_app, request
 from flask_restful import Resource
 
 from app.controllers.service_controller import ServiceController
+from .tasks import async_api
 
 
 class DeployResource(Resource):
@@ -32,7 +32,8 @@ class DeployResource(Resource):
 		if not hmac.compare_digest(str(mac.hexdigest()), str(signature)):
 			return {'msg': 'Invalid signature'}, 403
 
+	@async_api
 	def post(self):
 		service_controller = ServiceController()
-		service_controller.update_stack()
+		return service_controller.update_stack()
 
