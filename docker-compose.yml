@@ -5,8 +5,9 @@ services:
     restart: unless-stopped
     environment:
       SECRET_KEY: ${SECRET_KEY}
-      FLASK_APP: ${FLASK_APP}
-      FLASK_ENV: ${FLASK_ENV}
+      SIGNATURE_SECRET: ${SIGNATURE_SECRET}
     ports:
       - ${WEB_PORT}:80
+    volumes:
+      - ./data:/data
 

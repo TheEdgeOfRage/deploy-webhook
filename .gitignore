@@ -88,3 +88,6 @@ venv.bak/
 # mkdocs documentation
 /site
 
+# Docker database directory
+/data
+

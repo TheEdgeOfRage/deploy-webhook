@@ -1,0 +1,12 @@
+.git
+.gitignore
+
+docker-compose.yml
+Dockerfile
+.dockerignore
+
+.env
+.env-example
+
+LICENSE
+

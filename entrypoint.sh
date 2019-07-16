@@ -6,5 +6,6 @@
 # Distributed under terms of the BSD-3-Clause license.
 #
 
-gunicorn -w 1 --bind 0.0.0.0:80 run:app
+flask db upgrade
+gunicorn -w 1 --bind 0.0.0.0:80 ${FLASK_APP}
 

@@ -44,9 +44,18 @@ class ProdConfig(BaseConfig):
 	SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI ', None)
 
 
+class DockerConfig(BaseConfig):
+	DEBUG = False
+	TESTING = False
+	SIGNATURE_SECRET = environ.get('SIGNATURE_SECRET', None)
+	SECRET_KEY = environ.get('SECRET_KEY', None)
+	SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI ', 'sqlite:////data/auth.db')
+
+
 configs = {
 	'development': DevConfig,
 	'testing': TestConfig,
 	'production': ProdConfig,
+	'docker': DockerConfig,
 }
 
