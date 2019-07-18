@@ -6,8 +6,8 @@
 #
 # Distributed under terms of the BSD-3-Clause license.
 
-from flask import Blueprint
-from flask import Flask
+from flask import Blueprint, Flask
+from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from os import environ
 
@@ -29,6 +29,7 @@ def create_app(package_name=__name__):
 	config = configs.get(environ.get('FLASK_ENV', 'production'))
 	app.config.from_object(config)
 
+	CORS(app)
 	JWTManager(app)
 	init_db(app)
 	register_blueprint(app, package_name)
