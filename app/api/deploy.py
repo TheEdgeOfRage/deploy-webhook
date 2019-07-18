@@ -35,5 +35,6 @@ class DeployResource(Resource):
 	@async_api
 	def post(self):
 		service_controller = ServiceController()
-		return service_controller.update_stack()
+		services_to_update = request.json
+		return service_controller.update_stack(services_to_update)
 

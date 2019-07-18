@@ -46,13 +46,13 @@ class ServiceController(DockerController):
 		db.session.commit()
 		return True
 
-	def get_image_mappings(self, active_services):
+	def get_image_mappings(self, active_services, services_to_update):
 		services = self.get_services()
 		service_names = [service.name for service in active_services]
 		self.image_mappings = {service.name: {
 			'repository': service.repository,
 			'tag': service.tag,
-		} for service in services if service.name in service_names}
+		} for service in services if service.name in service_names and service.name in services_to_update}
 
 	def set_services_status(self, services):
 		active_services = self.client.services.list()
@@ -102,14 +102,15 @@ class ServiceController(DockerController):
 		if update_state != 'completed':
 			raise ServiceUpdateError(f'Failed to update service {service.name}')
 
-	def update_stack(self):
-		services = self.client.services.list()
-		self.get_image_mappings(services)
+	def update_stack(self, services_to_update):
+		active_services = self.client.services.list()
+		self.get_image_mappings(active_services, services_to_update)
+		print(self.image_mappings)
 		revert = self.backup_images()
 		self.pull_images()
 		updated_services = []
 
-		for service in services:
+		for service in active_services:
 			if service.name not in self.image_mappings:
 				continue
 
