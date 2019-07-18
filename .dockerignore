@@ -4,6 +4,7 @@
 docker-compose.yml
 Dockerfile
 .dockerignore
+.drone.yml
 
 .env
 .env-example
