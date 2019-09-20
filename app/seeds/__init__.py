@@ -11,7 +11,7 @@ import click
 from flask.cli import with_appcontext
 
 from .user_seeder import create_user
-from .service_seeder import create_services
+from .service_seeder import create_service
 
 
 @click.group()
@@ -29,9 +29,11 @@ def user(username, password, prompt):
     create_user(username, password, prompt)
 
 
+@click.option('-n', '--name', help=('Name of the service'))
+@click.option('-r', '--repository', help=('Repository in docker registry'))
+@click.option('-t', '--tag', help=('Image tag'))
 @seed.command()
 @with_appcontext
-def services():
-    create_services()
-
+def service(name, repository, tag):
+    create_service(name, repository, tag)
 

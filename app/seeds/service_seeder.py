@@ -12,17 +12,13 @@ from app.models.service import Service
 from app.db import db
 
 
-def create_services():
-	service1 = Service(name='test_s1', repository='theedgeofrage/test', tag='latest')
-	service2 = Service(name='test_s2', repository='theedgeofrage/test2', tag='latest')
-	service3 = Service(name='test_s3', repository='theedgeofrage/test3', tag='latest')
-	db.session.add(service1)
-	db.session.add(service2)
-	db.session.add(service3)
+def create_service(name, repository, tag):
+	service = Service(name=name, repository=repository, tag=tag)
+	db.session.add(service)
 	try:
 		db.session.commit()
-		print('Successfully created services')
+		print('Successfully created service', name)
 	except IntegrityError:
 		db.session.rollback()
-		print('Services already exists')
+		print('Service already exists')
 
