@@ -105,7 +105,6 @@ class ServiceController(DockerController):
 	def update_stack(self, services_to_update):
 		active_services = self.client.services.list()
 		self.get_image_mappings(active_services, services_to_update)
-		print(self.image_mappings)
 		revert = self.backup_images()
 		self.pull_images()
 		updated_services = []
@@ -121,6 +120,7 @@ class ServiceController(DockerController):
 				updated_services.append(service)
 			except (docker.errors.APIError, ServiceUpdateError) as e:
 				print(e)
+				updated_services.append(service)
 				if revert:
 					return self.revert_services(updated_services, service.name)
 				else:
@@ -138,5 +138,4 @@ class ServiceController(DockerController):
 				return {'err': 'Stack revert failed', 'msg': str(e)}, 500
 
 		return {'err': 'Stack update failed', 'msg': f'Service {failed_service} failed to update. Stack reverted'}, 500
-
 
