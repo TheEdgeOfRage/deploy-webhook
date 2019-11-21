@@ -23,13 +23,17 @@ class ContainerController(DockerController):
 	def get_active_containers(self, services):
 		containers = self.client.containers.list(all=True)
 		for service in services:
-			service['containers'] = [self.container_schema.dump(container) for container in containers if container.name.startswith(service['name'])]
+			service['containers'] = [
+				self.container_schema.dump(container)
+				for container in containers
+				if container.name.startswith(service['name'])
+			]
 
 	def get_container(self, container_id):
 		return self.client.containers.get(container_id)
 
 	def exec_command(self, container, command):
-		code, output = container.exec_run(command)
+		code, output = container.exec_run(['sh', '-c', command])
 		output = output.decode('UTF-8')
 
 		return code, output
