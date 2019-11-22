@@ -11,9 +11,10 @@ RUN set -ex \
 	&& apk add --no-cache --virtual .build-deps \
 		gcc \
 		make \
-		libc-dev \
 		musl-dev \
 		libffi-dev \
+	&& apk add --no-cache \
+		libc-dev \
 		binutils \
 	&& PIP_NO_CACHE_DIR=false \
 	&& pip install pipenv \
