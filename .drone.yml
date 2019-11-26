@@ -30,8 +30,8 @@ steps:
         path: /var/run/docker.sock
     commands:
       - docker login -u $REGISTRY_USER -p $REGISTRY_PASS registry.vivifyideas.com
-      - docker build -f Dockerfile -t registry.vivifyideas.com/deploy/webhook:$DRONE_BRANCH --pull .
-      - docker push registry.vivifyideas.com/deploy/webhook:$DRONE_BRANCH
+      - docker build -f Dockerfile -t registry.vivifyideas.com/deploy/webhook:${DRONE_BRANCH} --pull .
+      - docker push registry.vivifyideas.com/deploy/webhook:${DRONE_BRANCH}
       - docker image prune -f
 
   - name: slack
