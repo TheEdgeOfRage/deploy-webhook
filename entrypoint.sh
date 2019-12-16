@@ -1,7 +1,7 @@
 #! /bin/sh
 #
 # entrypoint.sh
-# Copyright (C) 2019 Vivify Ideas
+# Copyright (C) 2019 Pavle Portic <pavle.portic@tilda.center>
 #
 # Distributed under terms of the BSD-3-Clause license.
 #
