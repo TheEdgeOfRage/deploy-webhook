@@ -138,4 +138,3 @@ class ServiceController(DockerController):
 				return {'err': 'Stack revert failed', 'msg': str(e)}, 500
 
 		return {'err': 'Stack update failed', 'msg': f'Service {failed_service} failed to update. Stack reverted'}, 500
-

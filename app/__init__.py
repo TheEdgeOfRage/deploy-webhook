@@ -37,4 +37,3 @@ def create_app(package_name=__name__):
 	app.before_first_request(tasks.before_first_request)
 
 	return app
-

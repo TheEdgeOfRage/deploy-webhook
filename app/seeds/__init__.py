@@ -36,4 +36,3 @@ def user(username, password, prompt):
 @with_appcontext
 def service(name, repository, tag):
     create_service(name, repository, tag)
-

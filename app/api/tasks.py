@@ -76,4 +76,3 @@ class TaskResource(Resource):
 			return {'msg': 'Task is still running'}, 202
 
 		return task['response']
-

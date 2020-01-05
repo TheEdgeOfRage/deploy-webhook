@@ -53,4 +53,3 @@ class ServiceResource(Resource):
 			return {'msg': f'Successfully deleted service named {service_name}'}, 200
 		else:
 			return {'err': 'Services deletion failed', 'msg': f'The service named {service_name} has not been found'}, 404
-

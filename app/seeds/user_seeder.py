@@ -26,4 +26,3 @@ def create_user(username, password, prompt):
 	except IntegrityError:
 		db.session.rollback()
 		print('User already exists')
-

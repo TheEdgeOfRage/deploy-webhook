@@ -24,4 +24,3 @@ api.add_resource(ServiceResource, '/services/<service_name>')
 api.add_resource(ContainerExecResource, '/containers/<container_id>/exec')
 api.add_resource(ContainerLogsResource, '/containers/<container_id>/logs')
 api.add_resource(TaskResource, '/tasks/<task_id>')
-

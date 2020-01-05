@@ -11,4 +11,3 @@ from .seeds import seed
 
 def register_commands(app):
     app.cli.add_command(seed)
-

@@ -22,4 +22,3 @@ RUN set -ex \
 	&& apk del .build-deps
 
 COPY . /app/
-

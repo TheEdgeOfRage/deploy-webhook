@@ -8,4 +8,3 @@
 
 flask db upgrade
 gunicorn -w 1 --bind 0.0.0.0:80 ${FLASK_APP}
-

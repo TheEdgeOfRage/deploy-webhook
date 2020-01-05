@@ -37,4 +37,3 @@ class ContainerLogsResource(Resource):
 		output = container_controller.get_logs(container)
 
 		return {'msg': 'Successfully grabbed logs', 'container_name': container.name, 'output': output}, 200
-

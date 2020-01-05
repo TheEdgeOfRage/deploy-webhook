@@ -12,4 +12,3 @@ import docker
 class DockerController():
 	def __init__(self):
 		self.client = docker.from_env()
-

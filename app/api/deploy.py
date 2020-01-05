@@ -37,4 +37,3 @@ class DeployResource(Resource):
 		service_controller = ServiceController()
 		services_to_update = request.json
 		return service_controller.update_stack(services_to_update)
-

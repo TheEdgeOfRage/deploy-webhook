@@ -68,4 +68,3 @@ class RefreshResource(Resource):
 		}
 
 		return ret, 200
-

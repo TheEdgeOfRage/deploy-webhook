@@ -9,4 +9,3 @@
 
 class ServiceUpdateError(Exception):
 	pass
-

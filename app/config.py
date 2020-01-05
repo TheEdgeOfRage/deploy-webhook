@@ -58,4 +58,3 @@ configs = {
 	'production': ProdConfig,
 	'docker': DockerConfig,
 }
-

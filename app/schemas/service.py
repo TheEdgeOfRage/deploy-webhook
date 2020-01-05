@@ -13,4 +13,3 @@ class ServiceSchema(Schema):
     name = fields.Str()
     repository = fields.Str()
     tag = fields.Str()
-

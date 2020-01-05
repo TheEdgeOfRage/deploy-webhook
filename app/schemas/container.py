@@ -14,4 +14,3 @@ class ContainerSchema(Schema):
     short_id = fields.Str()
     name = fields.Str()
     status = fields.Str()
-

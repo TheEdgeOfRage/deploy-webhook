@@ -40,4 +40,3 @@ class ContainerController(DockerController):
 
 	def get_logs(self, container):
 		return container.logs(tail=1000).decode('UTF-8')
-

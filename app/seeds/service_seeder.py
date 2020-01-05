@@ -21,4 +21,3 @@ def create_service(name, repository, tag):
 	except IntegrityError:
 		db.session.rollback()
 		print('Service already exists')
-
