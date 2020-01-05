@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 # vim:fenc=utf-8
 #
-# Copyright © 2019 pavle <pavle.portic@tilda.center>
+# Copyright © 2016 Miguel Grinberg <miguelgrinberg50@gmail.com>
 #
-# Distributed under terms of the BSD-3-Clause license.
+# Distributed under terms of the MIT license.
 
 import threading
 import time
