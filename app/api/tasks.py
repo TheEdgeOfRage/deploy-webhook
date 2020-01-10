@@ -24,7 +24,9 @@ def before_first_request():
 			# Only keep tasks that are running or that finished less than 5 minutes ago.
 			five_min_ago = datetime.timestamp(datetime.utcnow()) - 5 * 60
 			tasks = {
-				task_id: task for task_id, task in tasks.items() if 'timestamp' not in task or task['timestamp'] > five_min_ago
+				task_id: task
+				for task_id, task in tasks.items()
+				if 'timestamp' not in task or task['timestamp'] > five_min_ago
 			}
 			time.sleep(60)
 
@@ -41,7 +43,10 @@ def async_api(f):
 				try:
 					tasks[task_id]['response'] = f(*args, **kwargs)
 				except Exception as e:
-					tasks[task_id]['response'] = {'err': 'Task failed', 'msg': str(e)}, 500
+					tasks[task_id]['response'] = {
+						'err': 'Task failed',
+						'msg': str(e)
+					}, 500
 					if current_app.debug:
 						raise e
 				finally:

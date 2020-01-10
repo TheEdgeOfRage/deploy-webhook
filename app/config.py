@@ -33,7 +33,7 @@ class TestConfig(BaseConfig):
 	TESTING = True
 	SIGNATURE_SECRET = environ.get('SIGNATURE_SECRET', 'default-secret')
 	SECRET_KEY = environ.get('SECRET_KEY', 'default-secret')
-	SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI ', 'sqlite:////tmp/auth.db')
+	SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI ', 'sqlite://')
 
 
 class ProdConfig(BaseConfig):
