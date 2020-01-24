@@ -8,8 +8,8 @@
 
 from sqlalchemy.exc import IntegrityError
 
-from app.models.service import Service
-from app.db import db
+from ... import db
+from ...models import Service
 
 
 def create_service(name, repository, tag):

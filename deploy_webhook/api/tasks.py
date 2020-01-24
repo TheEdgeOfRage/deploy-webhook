@@ -11,8 +11,10 @@ import time
 import uuid
 from datetime import datetime
 from flask import current_app, request
-from flask_restful import Resource
 from functools import wraps
+
+from . import api
+
 
 tasks = {}
 
@@ -67,17 +69,18 @@ def async_api(f):
 	return wrapped
 
 
-class TaskResource(Resource):
-	def get(self, task_id):
-		"""
-		Return status about an asynchronous task. If this request returns a 202
-		status code, it means that task hasn't finished yet. Else, the response
-		from the task is returned.
-		"""
-		task = tasks.get(task_id)
-		if task is None:
-			return {'err': 'Task not found'}, 404
-		if 'response' not in task:
-			return {'msg': 'Task is still running'}, 202
+@api.route('/tasks/<task_id>', methods=['GET'])
+def get_task_status(task_id):
+	"""
+	Return status about an asynchronous task. If this request returns a 202
+	status code, it means that task hasn't finished yet. Else, the response
+	from the task is returned.
+	"""
 
-		return task['response']
+	task = tasks.get(task_id)
+	if task is None:
+		return {'err': 'Task not found'}, 404
+	if 'response' not in task:
+		return {'msg': 'Task is still running'}, 202
+
+	return task['response']

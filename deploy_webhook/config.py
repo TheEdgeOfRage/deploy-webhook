@@ -6,6 +6,7 @@
 #
 # Distributed under terms of the BSD-3-Clause license.
 
+from logging.config import dictConfig
 from os import environ
 
 
@@ -23,6 +24,7 @@ class BaseConfig:
 class DevConfig(BaseConfig):
 	DEBUG = True
 	TESTING = True
+	LOGGING_LEVEL = 'DEBUG'
 	SIGNATURE_SECRET = environ.get('SIGNATURE_SECRET', 'default-secret')
 	SECRET_KEY = environ.get('SECRET_KEY', 'default-secret')
 	SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI ', 'sqlite:////tmp/auth.db')
@@ -31,6 +33,7 @@ class DevConfig(BaseConfig):
 class TestConfig(BaseConfig):
 	DEBUG = True
 	TESTING = True
+	LOGGING_LEVEL = 'WARNING'
 	SIGNATURE_SECRET = environ.get('SIGNATURE_SECRET', 'default-secret')
 	SECRET_KEY = environ.get('SECRET_KEY', 'default-secret')
 	SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI ', 'sqlite://')
@@ -39,6 +42,7 @@ class TestConfig(BaseConfig):
 class ProdConfig(BaseConfig):
 	DEBUG = False
 	TESTING = False
+	LOGGING_LEVEL = 'WARNING'
 	SIGNATURE_SECRET = environ.get('SIGNATURE_SECRET', None)
 	SECRET_KEY = environ.get('SECRET_KEY', None)
 	SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI ', None)
@@ -47,9 +51,42 @@ class ProdConfig(BaseConfig):
 class DockerConfig(BaseConfig):
 	DEBUG = False
 	TESTING = False
+	LOGGING_LEVEL = 'WARNING'
 	SIGNATURE_SECRET = environ.get('SIGNATURE_SECRET', None)
 	SECRET_KEY = environ.get('SECRET_KEY', None)
 	SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI ', 'sqlite:////data/auth.db')
+
+
+def configure_logging(app):
+	dictConfig({
+		'version': 1,
+		'disable_existing_loggers': False,
+		'formatters': {
+			'default_formatter': {
+				'format': '[%(asctime)s] %(levelname)-8s %(module)s: %(message)s',
+				'datefmt': '%Y-%m-%dT%H:%M:%S%z',
+			},
+		},
+		'handlers': {
+			'default_handler': {
+				'formatter': 'default_formatter',
+				'class': 'logging.StreamHandler',
+				#  'stream': 'ext://flask.logging.wsgi_errors_stream',
+			},
+		},
+		'loggers': {
+			'deploy_webhook': {
+				'level': app.config.get('LOGGING_LEVEL'),
+				'handlers': ['default_handler'],
+				'propagate': False,
+			},
+			'servicectl': {
+				'level': app.config.get('LOGGING_LEVEL'),
+				'handlers': ['default_handler'],
+				'propagate': False,
+			},
+		},
+	})
 
 
 configs = {

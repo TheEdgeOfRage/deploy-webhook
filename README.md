@@ -1,6 +1,6 @@
 # Deploy webhook
 
-A simple backend to manage docker stack deployments
+A simple Flask app to manage docker stack deployments
 
 ## Running
 

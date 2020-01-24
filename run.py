@@ -6,6 +6,6 @@
 #
 # Distributed under terms of the BSD-3-Clause license.
 
-from app import create_app
+from deploy_webhook import create_app
 
 app = create_app()

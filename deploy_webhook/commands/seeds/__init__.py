@@ -16,8 +16,8 @@ from .service_seeder import create_service
 
 @click.group()
 def seed():
-    """Perform database migrations."""
-    pass
+	"""Perform database migrations."""
+	pass
 
 
 @click.option('-u', '--username', default='admin', help=('Username of the account'))
@@ -26,7 +26,7 @@ def seed():
 @seed.command()
 @with_appcontext
 def user(username, password, prompt):
-    create_user(username, password, prompt)
+	create_user(username, password, prompt)
 
 
 @click.option('-n', '--name', help=('Name of the service'))
@@ -35,4 +35,4 @@ def user(username, password, prompt):
 @seed.command()
 @with_appcontext
 def service(name, repository, tag):
-    create_service(name, repository, tag)
+	create_service(name, repository, tag)

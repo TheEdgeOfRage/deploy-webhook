@@ -9,6 +9,16 @@
 from marshmallow import Schema, fields
 
 
+class ServiceSchema(Schema):
+	name = fields.Str()
+	repository = fields.Str()
+	tag = fields.Str()
+
+
 class UserSchema(Schema):
-    id = fields.Int()
-    username = fields.Str()
+	id = fields.Int()
+	username = fields.Str()
+
+
+service_schema = ServiceSchema()
+user_schema = UserSchema()

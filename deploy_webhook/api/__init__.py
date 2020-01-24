@@ -6,8 +6,8 @@
 #
 # Distributed under terms of the BSD-3-Clause license.
 
-from .seeds import seed
+from flask import Blueprint
 
+api = Blueprint('api', __name__)
 
-def register_commands(app):
-    app.cli.add_command(seed)
+from . import users, tasks, deploy, services, containers  # noqa

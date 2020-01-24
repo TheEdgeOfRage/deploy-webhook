@@ -6,8 +6,7 @@ Dockerfile
 .dockerignore
 .drone.yml
 
-.env
-.env-example
+.env*
 
 LICENSE
-
+README*

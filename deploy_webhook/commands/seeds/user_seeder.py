@@ -10,8 +10,8 @@
 from sqlalchemy.exc import IntegrityError
 from getpass import getpass
 
-from app.models.user import User
-from app.db import db
+from ... import db
+from ...models import User
 
 
 def create_user(username, password, prompt):
