@@ -20,7 +20,8 @@ def exec_command(container_id):
 	Execute one or more commands in the container with the specified id.
 	If one command fails, execution halts and a 422 response is returned.
 
-	:reqheader Authorization: valid JWT token
+	:reqheader Authorization: valid JWT access token
+	:reqheader Content-Type: application/json
 	:reqjson list commands: commands to run
 
 	:resjson string msg: status message
@@ -54,7 +55,7 @@ def get_container_logs(container_id):
 	"""
 	Get the standard output logs from the container with the specified id.
 
-	:reqheader Authorization: valid JWT token
+	:reqheader Authorization: valid JWT access token
 
 	:resjson string msg: status message
 	:resjson string container_name: container name

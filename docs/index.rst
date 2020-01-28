@@ -1,20 +1,26 @@
 .. deploy-webhook documentation master file
 
+==============
+deploy-webhook
+==============
 
-Contents
-========
+.. include:: about.rst
+
+Guide
+=====
 
 .. toctree::
-	:maxdepth: 2
+    :maxdepth: 2
 
-	install
-	api_reference
+    install
+    setup
+    api_reference
 
 
 Project Info
 ============
 
 .. toctree::
-	:maxdepth: 1
+    :maxdepth: 1
 
-	license
+    license

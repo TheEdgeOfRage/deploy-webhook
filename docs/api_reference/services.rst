@@ -10,7 +10,7 @@ Services
     .. sourcecode:: http
 
         GET /api/services HTTP/1.1
-        Authorization: Bearer eyJ0eXAiOiJK...
+        Authorization: Bearer eyJ0eXAi...
 
     **Example response**:
 
@@ -47,8 +47,8 @@ Services
 
     .. sourcecode:: http
 
-        POST /api/deploy HTTP/1.1
-        Authorization: Bearer eyJ0eXAiOiJK...
+        POST /api/services HTTP/1.1
+        Authorization: Bearer eyJ0eXAi...
         Content-Type: application/json
 
         {
@@ -83,7 +83,7 @@ Services
     .. sourcecode:: http
 
         DELETE /api/services/stack_service HTTP/1.1
-        Authorization: Bearer eyJ0eXAiOiJK...
+        Authorization: Bearer eyJ0eXAi...
 
     **Example response**:
 

@@ -50,6 +50,7 @@ def deploy():
 	:resjson string task_id: the unique id of the background task
 
 	:statuscode 202: Started deploy
+	:statuscode 500: deploy failed
 	"""
 
 	service_controller = ServiceController()

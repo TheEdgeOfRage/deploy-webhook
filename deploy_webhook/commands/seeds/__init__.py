@@ -16,8 +16,7 @@ from .service_seeder import create_service
 
 @click.group()
 def seed():
-	"""Perform database migrations."""
-	pass
+	"""Perform setup operations"""
 
 
 @click.option('-u', '--username', default='admin', help=('Username of the account'))
@@ -30,7 +29,7 @@ def user(username, password, prompt):
 
 
 @click.option('-n', '--name', help=('Name of the service'))
-@click.option('-r', '--repository', help=('Repository in docker registry'))
+@click.option('-r', '--repository', help=('Repository in a docker registry'))
 @click.option('-t', '--tag', help=('Image tag'))
 @seed.command()
 @with_appcontext

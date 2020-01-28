@@ -10,7 +10,7 @@ Containers
     .. sourcecode:: http
 
         POST /api/containers/17db9ee7ac/exec HTTP/1.1
-        Authorization: Bearer eyJ0eXAiOiJK...
+        Authorization: Bearer eyJ0eXAi...
 
         {
             "commands": ["echo test", "uname"]
@@ -48,7 +48,7 @@ Containers
     .. sourcecode:: http
 
         GET /api/containers/17db9ee7ac/logs HTTP/1.1
-        Authorization: Bearer eyJ0eXAiOiJK...
+        Authorization: Bearer eyJ0eXAi...
 
     **Example response**:
 

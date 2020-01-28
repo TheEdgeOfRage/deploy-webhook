@@ -1,5 +1,3 @@
-.. _install:
-
 Installation
 ============
 
@@ -24,7 +22,7 @@ To start the app, just run:
 
 .. code-block:: bash
 
-	$ docker-compose up -d
+    $ docker-compose up -d
 
 It will build the image, start the container in the background,
 and expose the app on the configured port.

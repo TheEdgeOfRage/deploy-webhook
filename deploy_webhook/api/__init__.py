@@ -10,4 +10,10 @@ from flask import Blueprint
 
 api = Blueprint('api', __name__)
 
-from . import users, tasks, deploy, services, containers  # noqa
+from . import (  # noqa
+	auth,
+	tasks,
+	deploy,
+	services,
+	containers,
+)

@@ -25,7 +25,7 @@ def get_services():
 	Get all tracked services, their status, as well as all containers
 	that belong to each service.
 
-	:reqheader Authorization: valid JWT token
+	:reqheader Authorization: valid JWT access token
 
 	:resjson list services: tracked services
 	:resjson string msg: status message
@@ -60,7 +60,8 @@ def add_service():
 	"""
 	Add a new service to the list of tracked services.
 
-	:reqheader Authorization: valid JWT token
+	:reqheader Authorization: valid JWT access token
+	:reqheader Content-Type: application/json
 	:reqjson string name: unique name of the service
 	:reqjson string repository: docker registry repository
 	:reqjson string tag: docker image tag
@@ -103,7 +104,7 @@ def delete_service(service_name):
 	"""
 	Remove a service from the list of tracked services.
 
-	:reqheader Authorization: valid JWT token
+	:reqheader Authorization: valid JWT access token
 	:param service_name: unique name of the service
 
 	:resjson string msg: status message
