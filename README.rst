@@ -4,6 +4,8 @@ Deploy webhook
 
 A Flask app to manage Docker stack deployments.
 
+Best in conjuction with https://github.com/TheEdgeOfRage/deploy-app.
+
 Documentation
 =============
 
