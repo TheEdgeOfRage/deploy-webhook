@@ -16,6 +16,22 @@ from . import api
 @api.route('/containers/<container_id>/exec', methods=['POST'])
 @jwt_required
 def exec_command(container_id):
+	"""
+	Execute one or more commands in the container with the specified id.
+	If one command fails, execution halts and a 422 response is returned.
+
+	:reqheader Authorization: valid JWT token
+	:reqjson list commands: commands to run
+
+	:resjson string msg: status message
+	:resjson string err: error message
+	:resjson list result: command execution results
+
+	:statuscode 200: found services
+	:statuscode 400: missing parameter
+	:statuscode 422: command failed
+	"""
+
 	commands = request.json.get('commands', None)
 	if commands is None:
 		return {'err': 'Missing parameter'}, 400
@@ -35,6 +51,18 @@ def exec_command(container_id):
 @api.route('/containers/<container_id>/logs', methods=['GET'])
 @jwt_required
 def get_container_logs(container_id):
+	"""
+	Get the standard output logs from the container with the specified id.
+
+	:reqheader Authorization: valid JWT token
+
+	:resjson string msg: status message
+	:resjson string container_name: container name
+	:resjson string output: container log
+
+	:statuscode 200: found services
+	"""
+
 	container_controller = ContainerController()
 	container = container_controller.get_container(container_id)
 	tail = int(request.args.get('tail') or 1000)

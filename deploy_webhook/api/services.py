@@ -21,6 +21,19 @@ from ..schemas import service_schema
 @api.route('/services', methods=['GET'])
 @jwt_required
 def get_services():
+	"""
+	Get all tracked services, their status, as well as all containers
+	that belong to each service.
+
+	:reqheader Authorization: valid JWT token
+
+	:resjson list services: tracked services
+	:resjson string msg: status message
+	:resjson string err: erro message
+
+	:statuscode 200: found services
+	"""
+
 	service_controller = ServiceController()
 	try:
 		services = Service.query.all()
@@ -34,7 +47,7 @@ def get_services():
 		services = container_controller.get_active_containers(services)
 	except InternalDockerError as e:
 		return {
-			'err': 'InternalDockerError',
+			'err': 'Internal Docker error',
 			'msg': str(e),
 		}, 500
 
@@ -44,6 +57,23 @@ def get_services():
 @api.route('/services', methods=['POST'])
 @jwt_required
 def add_service():
+	"""
+	Add a new service to the list of tracked services.
+
+	:reqheader Authorization: valid JWT token
+	:reqjson string name: unique name of the service
+	:reqjson string repository: docker registry repository
+	:reqjson string tag: docker image tag
+
+	:resjson string msg: status message
+	:resjson string err: error message
+	:resjson Service service: new deserialized service object
+
+	:statuscode 201: added service
+	:statuscode 400: missing parameter
+	:statuscode 409: service exists
+	"""
+
 	name = request.json.get('name', None)
 	repository = request.json.get('repository', None)
 	tag = request.json.get('tag', None)
@@ -63,25 +93,40 @@ def add_service():
 
 	return {
 		'msg': 'Successfully added service',
-		'service': service_schema.dump(service)
-	}, 200
+		'service': service_schema.dump(service),
+	}, 201
 
 
 @api.route('/services/<service_name>', methods=['DELETE'])
 @jwt_required
-def delete(self, service_name):
+def delete_service(service_name):
+	"""
+	Remove a service from the list of tracked services.
+
+	:reqheader Authorization: valid JWT token
+	:param service_name: unique name of the service
+
+	:resjson string msg: status message
+	:resjson string err: error message
+
+	:statuscode 200: deleted service
+	:statuscode 404: service not found
+	"""
+
 	try:
 		service = Service.query.filter_by(name=service_name).first()
 	except OperationalError as e:
 		return {'err': 'Internal error', 'msg': str(e)}, 500
 
 	if service is None:
-		return {'msg': f'Successfully deleted service named {service_name}'}, 200
+		return {
+			'err': 'Services deletion failed',
+			'msg': f'The service {service_name} has not been found',
+		}, 404
 
 	db.session.delete(service)
 	db.session.commit()
 
 	return {
-		'err': 'Services deletion failed',
-		'msg': f'The service {service_name} has not been found'
-	}, 404
+		'msg': f'Successfully deleted service named {service_name}',
+	}, 200

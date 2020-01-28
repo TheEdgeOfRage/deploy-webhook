@@ -63,7 +63,6 @@ def async_api(f):
 		}
 		tasks[task_id]['task'].start()
 
-		# Return a 202 response, with a link that the client can use to obtain task status
 		return {'msg': 'Task started', 'task_id': task_id}, 202
 
 	return wrapped
@@ -72,9 +71,12 @@ def async_api(f):
 @api.route('/tasks/<task_id>', methods=['GET'])
 def get_task_status(task_id):
 	"""
-	Return status about an asynchronous task. If this request returns a 202
+	Return the status about an asynchronous task. If this request returns a 202
 	status code, it means that task hasn't finished yet. Else, the response
 	from the task is returned.
+
+	:param task_id: the task's unique id
+	:statuscode 202: Task is still in progress
 	"""
 
 	task = tasks.get(task_id)

@@ -39,6 +39,19 @@ def verify_signature():
 @api.route('/deploy', methods=['POST'])
 @async_api
 def deploy():
+	"""
+	Asynchronously update designated services with a new version of image.
+	A background task thread with a `task_id` gets started that does the updating.
+
+	:reqheader Content-Type: application/json
+	:reqjson list services: the services to update
+
+	:resjson string msg: status message
+	:resjson string task_id: the unique id of the background task
+
+	:statuscode 202: Started deploy
+	"""
+
 	service_controller = ServiceController()
 	services_to_update = request.json
 	try:
