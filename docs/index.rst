@@ -14,6 +14,8 @@ Guide
 
     install
     setup
+    usage
+    details
     api_reference
 
 

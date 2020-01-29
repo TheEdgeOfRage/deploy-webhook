@@ -20,7 +20,7 @@ Containers
 
     .. sourcecode:: http
 
-        HTTP/1.0 200 OK
+        HTTP/1.1 200 OK
         Content-Type: application/json
 
         {
@@ -54,7 +54,7 @@ Containers
 
     .. sourcecode:: http
 
-        HTTP/1.0 200 OK
+        HTTP/1.1 200 OK
         Content-Type: application/json
 
         {

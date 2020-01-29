@@ -23,7 +23,7 @@ Authentication
 
     .. sourcecode:: http
 
-        HTTP/1.0 201 CREATED
+        HTTP/1.1 201 CREATED
         Content-Type: application/json
 
         {
@@ -56,7 +56,7 @@ Authentication
 
     .. sourcecode:: http
 
-        HTTP/1.0 200 OK
+        HTTP/1.1 200 OK
         Content-Type: application/json
 
         {
@@ -80,7 +80,7 @@ Authentication
 
     .. sourcecode:: http
 
-        HTTP/1.0 200 OK
+        HTTP/1.1 200 OK
         Content-Type: application/json
 
         {

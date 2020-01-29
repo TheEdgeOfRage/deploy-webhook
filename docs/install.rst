@@ -14,7 +14,8 @@ Docker installation
 -------------------
 
 There is already a production-ready docker-compose.yml file in this repo.
-Two variables need to be set in a .env file or hardcoded in the compose file:
+Some environment variables need to be set in a .env file or hardcoded in
+the compose file:
 
 - `SECRET_KEY` (The key used to sign JWT tokens)
 
@@ -36,7 +37,9 @@ A few environment variables need to be set in order for the app to run:
 - `SECRET_KEY=default-key` (The key used to sign JWT tokens)
 - `SQLALCHEMY_DATABASE_URI=/path/to/auth.db`
 
-Install all of the required dependencies using Poetry:
+Install all of the required dependencies using Poetry_:
+
+.. _Poetry: https://python-poetry.org/
 
 .. code-block:: bash
 

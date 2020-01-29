@@ -21,7 +21,7 @@ Deployment
 
     .. sourcecode:: http
 
-        HTTP/1.0 202 ACCEPTED
+        HTTP/1.1 202 ACCEPTED
         Content-Type: application/json
 
         {
@@ -45,7 +45,7 @@ Deployment
 
     .. sourcecode:: http
 
-        HTTP/1.0 200 OK
+        HTTP/1.1 200 OK
         Content-Type: application/json
 
         {
