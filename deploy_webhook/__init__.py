@@ -20,10 +20,16 @@ from .config import configs, configure_logging
 db = SQLAlchemy()
 
 
+def register_blueprints(app):
+	from .api import api as api_bp
+	app.register_blueprint(api_bp, url_prefix='/api')
+
+
 def create_app(package_name=__name__):
 	app = Flask(package_name)
 	config_class = configs.get(environ.get('FLASK_ENV', 'production'))
 	app.config.from_object(config_class)
+
 	configure_logging(app)
 	CORS(app)
 	JWTManager(app)
@@ -31,8 +37,7 @@ def create_app(package_name=__name__):
 	Migrate(app, db)
 	register_commands(app)
 
-	from .api import api as api_bp
-	app.register_blueprint(api_bp, url_prefix='/api')
+	register_blueprints(app)
 
 	from .api import tasks
 	app.before_first_request(tasks.before_first_request)

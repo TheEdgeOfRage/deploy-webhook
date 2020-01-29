@@ -27,7 +27,7 @@ class DevConfig(BaseConfig):
 	LOGGING_LEVEL = 'DEBUG'
 	SIGNATURE_SECRET = environ.get('SIGNATURE_SECRET', 'default-secret')
 	SECRET_KEY = environ.get('SECRET_KEY', 'default-secret')
-	SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI ', 'sqlite:////tmp/auth.db')
+	SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI', 'sqlite:////tmp/auth.db')
 
 
 class TestConfig(BaseConfig):
@@ -36,7 +36,7 @@ class TestConfig(BaseConfig):
 	LOGGING_LEVEL = 'WARNING'
 	SIGNATURE_SECRET = environ.get('SIGNATURE_SECRET', 'default-secret')
 	SECRET_KEY = environ.get('SECRET_KEY', 'default-secret')
-	SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI ', 'sqlite://')
+	SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI', 'sqlite://')
 
 
 class ProdConfig(BaseConfig):
@@ -45,7 +45,7 @@ class ProdConfig(BaseConfig):
 	LOGGING_LEVEL = 'WARNING'
 	SIGNATURE_SECRET = environ.get('SIGNATURE_SECRET', None)
 	SECRET_KEY = environ.get('SECRET_KEY', None)
-	SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI ', None)
+	SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI', None)
 
 
 class DockerConfig(BaseConfig):
@@ -54,7 +54,7 @@ class DockerConfig(BaseConfig):
 	LOGGING_LEVEL = 'WARNING'
 	SIGNATURE_SECRET = environ.get('SIGNATURE_SECRET', None)
 	SECRET_KEY = environ.get('SECRET_KEY', None)
-	SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI ', 'sqlite:////data/auth.db')
+	SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI', 'sqlite:////data/auth.db')
 
 
 def configure_logging(app):
@@ -71,7 +71,6 @@ def configure_logging(app):
 			'default_handler': {
 				'formatter': 'default_formatter',
 				'class': 'logging.StreamHandler',
-				#  'stream': 'ext://flask.logging.wsgi_errors_stream',
 			},
 		},
 		'loggers': {
