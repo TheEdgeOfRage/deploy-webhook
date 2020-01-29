@@ -34,7 +34,7 @@ how long. That's where the second endpoint comes in.
 
     $ curl -sSL '<host>/api/tasks/1be2ef0c636e45169899931df765a8e3'
 
-Which returns either
+Which returns
 
 .. sourcecode:: http
 
@@ -45,7 +45,7 @@ Which returns either
         "msg": "Task is still running"
     }
 
-or
+while the task is still running, and
 
 .. sourcecode:: http
 
@@ -55,6 +55,8 @@ or
     {
         "msg": "Successfully updated all services"
     }
+
+When the task has completed successfully.
 
 If any error occured and the stack has been reverted to the previous version,
 the response will look like this:
