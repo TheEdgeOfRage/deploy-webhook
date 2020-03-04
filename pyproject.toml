@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "A simple backend to manage Docker Swarm deployments"
 
 authors = ["Pavle Portic <pavle.portic@tilda.center>"]
-repository = "https://github.com/TheEdgeOfRage/servicectl"
+repository = "https://github.com/TheEdgeOfRage/deploy-webhook"
 license = "BSD-3-Clause"
 
 [tool.poetry.dependencies]
