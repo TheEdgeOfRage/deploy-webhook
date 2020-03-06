@@ -12,8 +12,9 @@ api = Blueprint('api', __name__)
 
 from . import (  # noqa
 	auth,
-	tasks,
-	deploy,
-	services,
 	containers,
+	deploy,
+	healthcheck,
+	services,
+	tasks,
 )

@@ -23,12 +23,13 @@ FROM python:3.8-alpine
 EXPOSE 80
 WORKDIR /app
 CMD ["sh", "/app/entrypoint.sh"]
+HEALTHCHECK --interval=10s --timeout=5s CMD curl http://127.0.0.1
 ENV PATH="/app/.venv/bin:$PATH" \
 	FLASK_APP=run:app \
 	FLASK_ENV=docker \
 	PYTHONUNBUFFERED=1
 
-RUN apk add --no-cache libc-dev binutils && mkdir /data
+RUN apk add --no-cache libc-dev binutils curl && mkdir /data
 
 COPY run.py docker/ ./
 COPY migrations/ ./migrations/
